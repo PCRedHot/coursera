@@ -1,7 +1,58 @@
 from progress_bar import ProgressBarHandler
 
+import numpy as np
+
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+
+def create_animation_optimal_operator(local_dict):
+    fig = local_dict['fig']
+    ax = local_dict['ax']
+    up31 = local_dict['up31']
+    up32 = local_dict['up32']
+    up33 = local_dict['up33']
+    up34 = local_dict['up34']
+
+    idisp = local_dict['idisp']
+    nt = local_dict['nt']
+
+    p_results = local_dict['p_results']
+    mp_results = local_dict['mp_results']
+    op_results = local_dict['op_results']
+    ap_results = local_dict['ap_results']
+
+    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+
+    def update(n, up31, up32, up33, up34):
+        it = n * idisp
+        p = p_results[n]
+        mp = mp_results[n]
+        op = op_results[n]
+        ap = ap_results[n]
+        
+        ax.set_title('Time Step (nt) = %d' % it)
+        
+        up31.set_ydata(p)
+        up32.set_ydata(mp)
+        up33.set_ydata(op)
+        up34.set_ydata(ap)
+
+        error1 = np.sum((np.abs(p - ap))) / np.sum(np.abs(ap)) * 100
+        error2 = np.sum((np.abs(mp - ap))) / np.sum(np.abs(ap)) * 100
+        error3 = np.sum((np.abs(op - ap))) / np.sum(np.abs(ap)) * 100
+
+        ax.legend((up31, up32, up33, up34),
+            ('3 point FD: %g %%' % error1,
+            '5 point FD: %g %%' % error2,
+            'optimal FD: %g %%' % error3,
+            'analytical'), loc='lower right', fontsize=10, numpoints=1)
+        
+        animation_progress_handler(n)
+        
+        return up31, up32, up33, up34
+
+    return animation.FuncAnimation(fig, update, nt//idisp + 1, fargs=(up31, up32, up33, up34), interval=50)
+
 
 def create_animation_heterogeneous(local_dict):
     fig = local_dict['fig']
