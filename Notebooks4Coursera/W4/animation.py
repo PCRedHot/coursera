@@ -3,6 +3,30 @@ from progress_bar import ProgressBarHandler
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+def create_animation_heterogeneous(local_dict):
+    fig = local_dict['fig']
+    ax = local_dict['ax']
+    im_wave = local_dict['im_wave']
+
+    idisp = local_dict['idisp']
+    nt = local_dict['nt']
+
+    p_results = local_dict['p_results']
+
+    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+
+    def update(n, w):
+        it = n * idisp
+        
+        w.set_data(p_results[n])
+        ax.set_title(f'Time Step (nt) = {it}, Max P = {p_results[n].max():.2f}')
+
+        animation_progress_handler(n)
+        
+        return im_wave
+
+    return animation.FuncAnimation(fig, update, nt//idisp + 1, fargs=(im_wave, ), interval=50)
+
 
 def create_animation_homogeneous(local_dict):
     fig2 = local_dict['fig2']
