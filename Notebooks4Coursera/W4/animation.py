@@ -5,6 +5,36 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+def create_animation_staggered(local_dict):
+    fig = local_dict['fig']
+    ax1 = local_dict['ax1']
+    line1 = local_dict['line1']
+    line2 = local_dict['line2']
+
+    title = local_dict['title']
+
+    idisp = local_dict['idisp']
+    nt = local_dict['nt']
+
+    x = local_dict['x']
+    v_results = local_dict['v_results']
+    s_results = local_dict['s_results']
+
+    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+
+    def update(n, l1, l2):
+        it = n * idisp
+        
+        l1.set_data(x, v_results[n])
+        l2.set_data(x, s_results[n])
+        ax1.set_title(title + ", time step: %i" % (it))
+
+        animation_progress_handler(n)
+        
+        return l1, l2
+
+    return animation.FuncAnimation(fig, update, nt//idisp + 1, fargs=(line1, line2), interval=50)
+    
 def create_animation_optimal_operator(local_dict):
     fig = local_dict['fig']
     ax = local_dict['ax']
