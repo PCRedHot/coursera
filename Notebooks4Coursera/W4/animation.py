@@ -1,6 +1,7 @@
 from progress_bar import ProgressBarHandler
 
 import numpy as np
+import math
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -20,7 +21,7 @@ def create_animation_staggered(local_dict):
     v_results = local_dict['v_results']
     s_results = local_dict['s_results']
 
-    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
 
     def update(n, l1, l2):
         it = n * idisp
@@ -33,7 +34,7 @@ def create_animation_staggered(local_dict):
         
         return l1, l2
 
-    return animation.FuncAnimation(fig, update, nt//idisp + 1, fargs=(line1, line2), interval=50)
+    return animation.FuncAnimation(fig, update, math.ceil(nt/idisp), fargs=(line1, line2), interval=50)
     
 def create_animation_optimal_operator(local_dict):
     fig = local_dict['fig']
@@ -51,7 +52,7 @@ def create_animation_optimal_operator(local_dict):
     op_results = local_dict['op_results']
     ap_results = local_dict['ap_results']
 
-    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
 
     def update(n, up31, up32, up33, up34):
         it = n * idisp
@@ -81,7 +82,7 @@ def create_animation_optimal_operator(local_dict):
         
         return up31, up32, up33, up34
 
-    return animation.FuncAnimation(fig, update, nt//idisp + 1, fargs=(up31, up32, up33, up34), interval=50)
+    return animation.FuncAnimation(fig, update, math.ceil(nt/idisp), fargs=(up31, up32, up33, up34), interval=50)
 
 
 def create_animation_heterogeneous(local_dict):
@@ -94,7 +95,7 @@ def create_animation_heterogeneous(local_dict):
 
     p_results = local_dict['p_results']
 
-    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
 
     def update(n, w):
         it = n * idisp
@@ -106,7 +107,7 @@ def create_animation_heterogeneous(local_dict):
         
         return im_wave
 
-    return animation.FuncAnimation(fig, update, nt//idisp + 1, fargs=(im_wave, ), interval=50)
+    return animation.FuncAnimation(fig, update, math.ceil(nt/idisp), fargs=(im_wave, ), interval=50)
 
 
 def create_animation_homogeneous(local_dict):
@@ -124,7 +125,7 @@ def create_animation_homogeneous(local_dict):
     p_results = local_dict['p_results']
     seis_results = local_dict['seis_results']
 
-    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
 
     def update(n, up41, up42):
         it = n * idisp
@@ -139,7 +140,7 @@ def create_animation_homogeneous(local_dict):
         
         return up41, up42
 
-    return animation.FuncAnimation(fig2, update, nt//idisp + 1, fargs=(up41, up42), interval=50)
+    return animation.FuncAnimation(fig2, update, math.ceil(nt/idisp), fargs=(up41, up42), interval=50)
 
 
 def create_animation_advection_1d_euler_scheme(local_dict):
@@ -152,7 +153,7 @@ def create_animation_advection_1d_euler_scheme(local_dict):
     dt = local_dict['dt']
     title1 = local_dict['title1']
 
-    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
     
     def update(n, line):
         line.set_ydata(unew_results[n])
@@ -162,7 +163,7 @@ def create_animation_advection_1d_euler_scheme(local_dict):
                 
         return line,
     
-    return animation.FuncAnimation(fig1, update, nt//idisp + 1, fargs=(line1, ), interval=50)
+    return animation.FuncAnimation(fig1, update, math.ceil(nt/idisp), fargs=(line1, ), interval=50)
 
 
 def create_animation_advection_1d_predictor_corrector_scheme(local_dict):
@@ -175,7 +176,7 @@ def create_animation_advection_1d_predictor_corrector_scheme(local_dict):
     dt = local_dict['dt']
     title2 = local_dict['title2']
 
-    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
 
     def update(n, line):
         line.set_ydata(unew_results[n])
@@ -185,7 +186,7 @@ def create_animation_advection_1d_predictor_corrector_scheme(local_dict):
 
         return line,
     
-    return animation.FuncAnimation(fig2, update, nt//idisp + 1, fargs=(line2, ), interval=50)
+    return animation.FuncAnimation(fig2, update, math.ceil(nt/idisp), fargs=(line2, ), interval=50)
 
 def create_animation_advection_1d_mccormack_scheme(local_dict):
     unew_results = local_dict['unew_results']
@@ -197,7 +198,7 @@ def create_animation_advection_1d_mccormack_scheme(local_dict):
     dt = local_dict['dt']
     title3 = local_dict['title3']
     
-    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
 
     def update(n, line):
         line.set_ydata(unew_results[n])
@@ -207,7 +208,7 @@ def create_animation_advection_1d_mccormack_scheme(local_dict):
         
         return line,
     
-    return animation.FuncAnimation(fig3, update, nt//idisp + 1, fargs=(line3, ), interval=50)
+    return animation.FuncAnimation(fig3, update, math.ceil(nt/idisp), fargs=(line3, ), interval=50)
 
 def create_animation_advection_1d_lax_wendroff_scheme(local_dict):
     unew_results = local_dict['unew_results']
@@ -219,7 +220,7 @@ def create_animation_advection_1d_lax_wendroff_scheme(local_dict):
     dt = local_dict['dt']
     title4 = local_dict['title4']
     
-    animation_progress_handler = ProgressBarHandler(nt//idisp + 1, "Creating animation...", remain_after_finish=False)
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
 
     def update(n, line):
         line.set_ydata(unew_results[n])
@@ -229,4 +230,4 @@ def create_animation_advection_1d_lax_wendroff_scheme(local_dict):
         
         return line,
     
-    return animation.FuncAnimation(fig4, update, nt//idisp + 1, fargs=(line4, ), interval=50)
+    return animation.FuncAnimation(fig4, update, math.ceil(nt/idisp), fargs=(line4, ), interval=50)
