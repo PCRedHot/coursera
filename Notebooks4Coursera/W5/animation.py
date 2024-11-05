@@ -74,3 +74,37 @@ def create_animation_fourier_acoustic_1d(local_dict):
         return l1, l2, l3
         
     return animation.FuncAnimation(fig, update, math.ceil(nt/idisp), fargs=(l1, l2, l3), interval=50)
+
+
+def create_animation_fourier_acoustic_2d(local_dict):
+    fig = local_dict['fig']
+    
+    ax1 = local_dict['ax1']
+    ax2 = local_dict['ax2']
+
+    l1 = local_dict['line1']
+    l2 = local_dict['line2']
+
+    idisp = local_dict['idisp']
+    nt = local_dict['nt']
+
+    animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
+
+    sp_results = local_dict['sp_results']
+    ap_results = local_dict['ap_results']
+
+    def update(n, l1, l2):
+        it = n * idisp
+
+        ax1.imshow(sp_results[n], interpolation="bicubic", cmap=plt.cm.RdBu)
+        ax2.imshow(ap_results[n], interpolation="bicubic", cmap=plt.cm.RdBu)
+
+        # l1.set_data(sp_results[n])
+        # l2.set_data(ap_results[n])
+
+        animation_progress_handler(n)
+        
+        return (l1, l2)
+
+    return animation.FuncAnimation(fig, update, math.ceil(nt/idisp), fargs=(l1, l2), interval=50)
+    
