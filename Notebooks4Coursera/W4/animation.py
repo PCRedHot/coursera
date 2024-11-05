@@ -43,10 +43,10 @@ def create_animation_staggered(local_dict):
         min_s = min(s_results[n])
         max_s = max(s_results[n])
 
-        ax1_min = min_v - abs(min_v * 0.05)
-        ax1_max = max_v + abs(max_v * 0.05)
-        ax2_min = min_s - abs(min_s * 0.05)
-        ax2_max = max_s + abs(max_s * 0.05)
+        ax1_min = min_v - (max_v - min_v) * 0.05
+        ax1_max = max_v + (max_v - min_v) * 0.05
+        ax2_min = min_s - (max_s - min_s) * 0.05
+        ax2_max = max_s + (max_s - min_s) * 0.05
 
         if ax1_min_y_lim is None or ax1_min < ax1_min_y_lim:
             ax1_min_y_lim = ax1_min
