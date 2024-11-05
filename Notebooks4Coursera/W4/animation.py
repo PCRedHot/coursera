@@ -9,6 +9,7 @@ import matplotlib.animation as animation
 def create_animation_staggered(local_dict):
     fig = local_dict['fig']
     ax1 = local_dict['ax1']
+    ax2 = local_dict['ax2']
     line1 = local_dict['line1']
     line2 = local_dict['line2']
 
@@ -23,12 +24,52 @@ def create_animation_staggered(local_dict):
 
     animation_progress_handler = ProgressBarHandler(math.ceil(nt/idisp), "Creating animation...", remain_after_finish=False)
 
+    ax1_min_y_lim = None
+    ax1_max_y_lim = None
+    ax2_min_y_lim = None
+    ax2_max_y_lim = None
+
     def update(n, l1, l2):
+        nonlocal ax1_min_y_lim, ax1_max_y_lim, ax2_min_y_lim, ax2_max_y_lim
+        
         it = n * idisp
         
         l1.set_data(x, v_results[n])
         l2.set_data(x, s_results[n])
         ax1.set_title(title + ", time step: %i" % (it))
+
+        min_v = min(v_results[n])
+        max_v = max(v_results[n])
+        min_s = min(s_results[n])
+        max_s = max(s_results[n])
+
+        ax1_min = min_v - abs(min_v * 0.05)
+        ax1_max = max_v + abs(max_v * 0.05)
+        ax2_min = min_s - abs(min_s * 0.05)
+        ax2_max = max_s + abs(max_s * 0.05)
+
+        if ax1_min_y_lim is None or ax1_min < ax1_min_y_lim:
+            ax1_min_y_lim = ax1_min
+        else:
+            ax1_min = ax1_min_y_lim
+            
+        if ax1_max_y_lim is None or ax1_max > ax1_max_y_lim:
+            ax1_max_y_lim = ax1_max
+        else:
+            ax1_max = ax1_max_y_lim
+            
+        if ax2_min_y_lim is None or ax2_min < ax2_min_y_lim:
+            ax2_min_y_lim = ax2_min
+        else:
+            ax2_min = ax2_min_y_lim
+            
+        if ax2_max_y_lim is None or ax2_max > ax2_max_y_lim:
+            ax2_max_y_lim = ax2_max
+        else:
+            ax2_max = ax2_max_y_lim
+
+        ax1.set_ylim([ax1_min, ax1_max])
+        ax2.set_ylim([ax2_min, ax2_max])
 
         animation_progress_handler(n)
         
